@@ -76,7 +76,7 @@ app.get('/', (req, res) => {
     //     console.log(foundItems);
     //     res.render("list",{listitle: day,itemadds: foundItems});
     // });
-    Item.find({}).then(function(FoundItems){
+    Item.find({}).then((FoundItems) => {
         if(FoundItems.length===0){
             Item.insertMany(defaultItem)
             .then( () =>{
