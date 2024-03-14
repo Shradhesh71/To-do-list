@@ -6,8 +6,9 @@ const path = require('path');
 const date = require(__dirname +"/date.js");
 const mongoose = require('mongoose');
 const _ = require("lodash");
+require("dotenv").config();
 
-mongoose.connect('mongodb+srv://shradesh71:newone71@cluster0.4tegtua.mongodb.net/portfolio?retryWrites=true')
+mongoose.connect(process.env.MONGO_URL)
 .then(()=>{
     console.warn("connect...");
 });
