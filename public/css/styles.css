@@ -73,3 +73,16 @@ footer{
     text-align: center;
     color: gray;
 }
+
+@media(max-width:768px){
+    .item{
+        min-height: 10px;
+        display: flex;
+        align-items:center;
+        border-bottom: 1px solid #f1f1f1;
+    }
+    .box{
+        width: 800px;
+        
+    }
+}

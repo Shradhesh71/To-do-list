@@ -1,25 +1,28 @@
     <%- include('header'); -%>
     <title>To do lists | <%= listitle %></title> 
-    <div class="box" id="heading">
+    <div class="box" id="heading"> 
     <h1>It's is a <%= listitle %></h1></div>
     <div class="box">
 
      
     <%   itemadds.forEach(item=>{    %>
+    <div class="first">
         <form method="post" action="/delete">
             <div class="item">
             <input type="checkbox" name="checkbox" value="<%= item._id %>" onChange="this.form.submit()">
                 <p><%= item.name %></p>
             </div>
-            <input type="hidden" name="listName" value="<%= listitle %>" ></form>
+            <input type="hidden" name="listName" value="<%= listitle %>" >
         </form>
+    </div>
     <%   });  %>
     
-
+    <div class="item">
         <form class="item" method="post" action="/">
             <input type="text" name="additem" placeholder="Add item" autofocus autocomplete="off">
             <button type="submit" name="list" value="<%= listitle %>">+</button>
         </form>
+    </div>
     </div>
    
 <%- include('footer'); -%>

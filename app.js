@@ -6,8 +6,9 @@ const path = require('path');
 const date = require(__dirname +"/date.js");
 const mongoose = require('mongoose');
 const _ = require("lodash");
+require("dotenv").config();
 
-mongoose.connect('mongodb+srv://shradesh71:newone71@cluster0.4tegtua.mongodb.net/portfolio?retryWrites=true')
+mongoose.connect(process.env.MONGO_URL)
 .then(()=>{
     console.warn("connect...");
 });
@@ -76,7 +77,7 @@ app.get('/', (req, res) => {
     //     console.log(foundItems);
     //     res.render("list",{listitle: day,itemadds: foundItems});
     // });
-    Item.find({}).then((FoundItems) => {
+    Item.find({}).then((FoundItems) => {        // find all items inside items 
         if(FoundItems.length===0){
             Item.insertMany(defaultItem)
             .then( () =>{
@@ -162,7 +163,7 @@ app.post('/',(req,res)=>{
         .then((foundItem)=>{
             foundItem.items.push(item);
             foundItem.save();
-            console.log("Website Open "+listName);
+            console.log("Content Save & Website Open "+listName);
             res.redirect("/"+listName);
         })
         .catch((err)=>{
