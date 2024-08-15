@@ -13,9 +13,12 @@ mongoose.connect(process.env.MONGO_URL)
     console.warn("connect...");
 });
 
-const itemSchema = {
-    name:String
-};
+// const itemSchema = {
+//     name:String,
+// };
+const itemSchema = new mongoose.Schema({
+    name: String,
+}, { timestamps: true });
 
 const day = date.getDay();
 
@@ -31,14 +34,19 @@ const item3 = new Item({
     name:"<--Hit this to delete an item"
 });
 const defaultItem = [item1,item2,item3];
-
+let today = new Date();
+let options ={
+    day:"numeric",
+    month : "long",
+    year : "numeric",
+};
+let days = today.toLocaleDateString("en-US",options);
 const listSchema = {
     name:String,
     items:[itemSchema]
 }
 const List = mongoose.model("List",listSchema);
 
-// console.log(date());
 
 app.use(bodyParser.urlencoded({ extended: true }));
 // app.use(express.static("css"));

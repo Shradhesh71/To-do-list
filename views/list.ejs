@@ -10,7 +10,9 @@
         <form method="post" action="/delete">
             <div class="item">
             <input type="checkbox" name="checkbox" value="<%= item._id %>" onChange="this.form.submit()">
-                <p><%= item.name %></p>
+                <p><%= item.name %> 
+                    <span style="color: lightgray; font-size: small;float: right;margin-left: 15px;"><%= item.createdAt.toLocaleDateString('en-GB', { day: '2-digit', month: 'short' })%></span>
+                </p>
             </div>
             <input type="hidden" name="listName" value="<%= listitle %>" >
         </form>
