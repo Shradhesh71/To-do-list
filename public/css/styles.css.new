@@ -1,0 +1,8 @@
+.box {
+  max-width: 800px;
+  margin: 50px auto;
+  background: var(--primary);
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+  padding: 1.5rem;
+}

@@ -1,30 +1,62 @@
     <%- include('header'); -%>
-    <title>To do lists | <%= listitle %></title> 
-    <div class="box" id="heading"> 
-    <h1>It's is a <%= listitle %></h1></div>
-    <div class="box">
-
-     
-    <%   itemadds.forEach(item=>{    %>
-    <div class="first">
-        <form method="post" action="/delete">
-            <div class="item">
-            <input type="checkbox" name="checkbox" value="<%= item._id %>" onChange="this.form.submit()">
-                <p><%= item.name %> 
-                    <span style="color: lightgray; font-size: small;float: right;margin-left: 15px;"><%= item.createdAt.toLocaleDateString('en-GB', { day: '2-digit', month: 'short' })%></span>
-                </p>
+    <title>To do lists | <%= listitle %></title>
+    <div class="container">
+        <div class="box" id="heading">
+            <h1><%= listitle %></h1>
+        </div>
+        
+        <div class="box">
+            <div class="controls">
+                <div class="sort-control">
+                    <label for="sort">Sort by:</label>
+                    <select id="sort" onchange="sortTasks(this.value)">
+                        <option value="newest">Newest First</option>
+                        <option value="oldest">Oldest First</option>
+                    </select>
+                </div>
             </div>
-            <input type="hidden" name="listName" value="<%= listitle %>" >
-        </form>
+
+            <div id="tasks-container">
+            <% itemadds.forEach(item => { %>
+                <div class="first">
+                    <form method="post" action="/delete">
+                        <div class="item">
+                            <input type="checkbox" name="checkbox" value="<%= item._id %>" onChange="this.form.submit()">
+                            <div class="task-content">
+                                <% if (item.name.match(/https?:\/\/[^\s]+/)) { %>
+                                    <a href="<%= item.name %>" target="_blank" class="task-link"><%= item.name %></a>
+                                <% } else { %>
+                                    <p><%= item.name %></p>
+                                <% } %>
+                                <span class="task-date"><%= item.createdAt.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })%></span>
+                            </div>
+                        </div>
+                        <input type="hidden" name="listName" value="<%= listitle %>">
+                    </form>
+                </div>
+            <% }); %>
+            </div>
+
+            <form class="new-item-form" method="post" action="/">
+                <input type="text" name="additem" placeholder="Add a new task or paste a link..." autofocus autocomplete="off">
+                <button type="submit" name="list" value="<%= listitle %>">+</button>
+            </form>
+        </div>
     </div>
-    <%   });  %>
-    
-    <div class="item">
-        <form class="item" method="post" action="/">
-            <input type="text" name="additem" placeholder="Add item" autofocus autocomplete="off">
-            <button type="submit" name="list" value="<%= listitle %>">+</button>
-        </form>
-    </div>
-    </div>
+
+    <script>
+    function sortTasks(order) {
+        const container = document.getElementById('tasks-container');
+        const tasks = Array.from(container.children);
+        
+        tasks.sort((a, b) => {
+            const dateA = new Date(a.querySelector('.task-date').textContent);
+            const dateB = new Date(b.querySelector('.task-date').textContent);
+            return order === 'newest' ? dateB - dateA : dateA - dateB;
+        });
+        
+        tasks.forEach(task => container.appendChild(task));
+    }
+    </script>
    
 <%- include('footer'); -%>
