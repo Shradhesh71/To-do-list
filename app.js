@@ -89,7 +89,7 @@ app.get('/', (req, res) => {
         if(FoundItems.length===0){
             Item.insertMany(defaultItem)
             .then( () =>{
-                console.log("Successfully saved defult items to DB");
+                // console.log("Successfully saved defult items to DB");
             }).catch( (err) =>{
                 console.log(err);
                 console.log("Failed to save defult items to DB");
@@ -104,24 +104,24 @@ app.get('/', (req, res) => {
 
 app.get("/:customlistname",(req,res)=>{
     const customlistname = _.capitalize(req.params.customlistname);
-    console.log(customlistname+" Webpage Successfully!!");
+    // console.log(customlistname+" Webpage Successfully!!");
 
     List.findOne({name:customlistname})
     .then((foundItem)=>{
         // if(!err){
             if(!foundItem){
-                console.log("Does't exist!!");
+                // console.log("Does't exist!!");
 
                 const list =new List({
                 name :customlistname,
                 items:defaultItem
                 });
-                console.log("Add common item");
+                // console.log("Add common item");
                 list.save();
 
                 res.redirect("/"+customlistname);
             }else{
-                console.log("Found");
+                // console.log("Found");
                 res.render("list",{listitle: foundItem.name, itemadds:foundItem.items});
             }
         // }
@@ -163,7 +163,7 @@ app.post('/',(req,res)=>{
         name: itemName
     });
     if(listName === day){
-        console.log(itemName+" added Successfully!!");
+        // console.log(itemName+" added Successfully!!");
         item.save();
         res.redirect("/");
     } else{
@@ -171,7 +171,7 @@ app.post('/',(req,res)=>{
         .then((foundItem)=>{
             foundItem.items.push(item);
             foundItem.save();
-            console.log("Content Save & Website Open "+listName);
+            // console.log("Content Save & Website Open "+listName);
             res.redirect("/"+listName);
         })
         .catch((err)=>{
@@ -197,14 +197,14 @@ app.post('/',(req,res)=>{
 
 app.post('/delete',(req,res)=>{
     const checkedItemId = req.body.checkbox;
-    console.log("THis ID item is delete: "+checkedItemId);
+    // console.log("THis ID item is delete: "+checkedItemId);
 
     const listName = req.body.listName;
     if(listName === day){
         Item.findByIdAndRemove(checkedItemId)
         .then( () =>{
             res.redirect("/");
-            console.log("Successfully delete item to DB");
+            // console.log("Successfully delete item to DB");
         }).catch( (err) =>{
             console.log(err);
             console.log("Failed to delete item to DB");
@@ -212,7 +212,7 @@ app.post('/delete',(req,res)=>{
     }
     else{
         List.findOneAndUpdate({name:listName},{$pull:{items:{_id:checkedItemId}}}).then( () =>{
-                console.log("Successfully loaded" + listName);
+                // console.log("Successfully loaded" + listName);
                 res.redirect("/" + listName);
         })
         .catch( (err) =>{
